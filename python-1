@@ -1,0 +1,159 @@
+menu = []
+harga = []
+
+def tambah_menu(menu, harga):
+    item = input("Masukkan menu: ")
+    
+    try:
+        h = int(input("Masukkan harga: "))
+    except:
+        print("Harga tidak valid!")
+        return
+    
+    menu.append(item)
+    harga.append(h)
+    print("Menu sudah ditambah")
+
+def lihat_menu(menu, harga):
+    if len(menu) == 0:
+        print("Menu masih kosong")
+        return
+    
+    for i in range(len(menu)):
+        print(i+1, ".", menu[i], "--", harga[i])
+
+def hapus_menu(menu, harga):
+    if len(menu) == 0:
+        print("Menu masih kosong")
+        return
+    
+    lihat_menu(menu, harga)
+    
+    try:
+        hapus = int(input("Pilih yang mau dihapus: "))
+    except:
+        print("Input tidak valid!")
+        return
+    
+    if 1 <= hapus <= len(menu):
+        index = hapus - 1
+        print("Menghapus:", menu[index])
+        menu.pop(index)
+        harga.pop(index)
+    else:
+        print("Pilihan tidak tersedia")
+
+def edit_menu(menu, harga):
+    if len(menu) == 0:
+        print("Menu masih kosong")
+        return
+    
+    lihat_menu(menu, harga)
+    
+    try:
+        edit = int(input("Pilih yang mau diedit: "))
+    except:
+        print("Input tidak valid!")
+        return
+    
+    if 1 <= edit <= len(menu):
+        index = edit - 1
+    else:
+        print("Pilihan tidak tersedia!")
+        return
+    
+    nama_baru = input("Masukkan nama baru: ")
+    
+    try:
+        harga_baru = int(input("Masukkan harga baru: "))
+    except:
+        print("Harga tidak valid!")
+        return
+    
+    menu[index] = nama_baru
+    harga[index] = harga_baru
+    print("Menu berhasil diupdate!")
+
+
+def hitung_total(harga_satuan, jumlah):
+    return harga_satuan * jumlah
+
+def diskon(total):
+    if total >= 50000:
+        return 10000
+    elif total >= 30000:
+        return 5000
+    else:
+        return 0
+
+
+def beli(menu, harga):
+    if len(menu) == 0:
+        print("Menu masih kosong!")
+        return
+    
+    total = 0
+    
+    while True:
+        lihat_menu(menu, harga)
+        print(len(menu)+1, ". Selesai")
+        
+        try:
+            pilih = int(input("Pilih menu: "))
+        except:
+            print("Input tidak valid!")
+            continue
+        
+        if 1 <= pilih <= len(menu):
+            index = pilih - 1
+            
+            try:
+                jumlah = int(input("Jumlah: "))
+            except:
+                print("Jumlah tidak valid!")
+                continue
+            
+            subtotal = hitung_total(harga[index], jumlah)
+            total += subtotal
+            
+            print("Ditambahkan:", menu[index], "x", jumlah)
+        
+        elif pilih == len(menu)+1:
+            d = diskon(total)
+            total_akhir = total - d
+            
+            print("Total awal:", total)
+            print("Diskon:", d)
+            print("Total akhir:", total_akhir)
+            break
+        
+        else:
+            print("Pilihan tidak tersedia")
+
+
+while True:
+    print("\n=== MENU UTAMA ===")
+    print("1. Tambah menu")
+    print("2. Lihat menu")
+    print("3. Hapus menu")
+    print("4. Edit menu")
+    print("5. Beli")
+    print("6. Keluar")
+    
+    pilih = input("Pilih: ")
+    
+    if pilih == "1":
+        tambah_menu(menu, harga)
+    elif pilih == "2":
+        lihat_menu(menu, harga)
+    elif pilih == "3":
+        hapus_menu(menu, harga)
+    elif pilih == "4":
+        edit_menu(menu, harga)
+    elif pilih == "5":
+        beli(menu, harga)
+    elif pilih == "6":
+        print("Terima kasih")
+        break
+    else:
+        print("Pilihan tidak valid!")
